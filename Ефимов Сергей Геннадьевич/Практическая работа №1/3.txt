@@ -1,0 +1,28 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ConsoleApp3
+{
+    class Program
+    {
+        static int Sum(int[] arr, int i = 0)
+        {
+            if (i >= arr.Length)
+                return 0;
+            else
+                return arr[i] + Sum(arr, i + 1);
+
+        }
+
+        static void Main(string[] args)
+        {
+            int[] arr = { 30, 20, 50, 100 };
+            Console.WriteLine(Sum(arr));
+            Console.ReadKey();
+        }
+    }
+}
+
