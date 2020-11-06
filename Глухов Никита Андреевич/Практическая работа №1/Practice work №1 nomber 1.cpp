@@ -4,7 +4,7 @@
 #include <iostream>
 #include <Windows.h>
 
-#define ArrSquare ((sizeof(OriginalArray) / sizeof(float))
+//#define ArrSquare ((sizeof(OriginalArray) / sizeof(float))
 //Я делал в спешке, чтобы сделать скорее. Дайте мне знать как переделать, я бы мог все по функциям распределить и
 //задействовать указатели. Спасибо.
 int main()
@@ -12,6 +12,8 @@ int main()
     SetConsoleCP(1251);
     SetConsoleOutputCP(1251);
     using namespace std;
+
+    int SizeArray = 12;
     float OriginalArray[12] = {
         43.08, 5.57, 30.63,
         51.67, 96.28, 18.71,
@@ -21,30 +23,23 @@ int main()
     float ArithmeticMean;
     int i = 0;// (sizeof(OriginalArray) / sizeof(float));
     float Amount = 0;
-    while (i<12) {
+    for (i = 0; i < SizeArray; i++) {
         Amount += OriginalArray[i];
-        i++;
     }
-    ArithmeticMean = Amount / 12;
+    ArithmeticMean = Amount / SizeArray;
     cout << ArithmeticMean << "\n";
-    i = 0;
     cout << "Исходный массив\n";
-    while (i < 12) {
+    for (i = 0; i < SizeArray; i++) {
         cout << OriginalArray[i] << "  ";
-        i++;
     }
-    i = 0;
-    while (i < 12) {
+    for (i = 0; i < SizeArray; i++) {
         if(ArithmeticMean > OriginalArray[i]){
             OriginalArray[i] = 0;
         }
-        i++;
     }
-    i = 0;
     cout << "Конечный массив\n";
-    while (i < 12) {
+    for (i = 0; i < SizeArray; i++) {
         cout << OriginalArray[i] << "  ";
-        i++;
     }
 }
 
