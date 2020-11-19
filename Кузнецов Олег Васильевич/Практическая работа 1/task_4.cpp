@@ -10,7 +10,7 @@ int main()
 	for (int i = 0; i < arr_size; ++i) {
 		number_repeat[arr[i]]++;
 	}
-	for (int i = 0; i <= values_number; ++i) {
+	for (int i = 0; i < values_number; ++i) {
 		for (int j = 0; j < number_repeat[i]; ++j) {
 			std::cout << i << " ";
 		}
