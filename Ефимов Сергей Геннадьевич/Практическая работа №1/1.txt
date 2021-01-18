@@ -2,6 +2,7 @@
 using namespace std;
 int main()
 {
+	const int N = 10;
 	float a[10] = { 10,9,8,7,6,5,4,3,2,1 };
 	float all = 0, medium = 0;
 
