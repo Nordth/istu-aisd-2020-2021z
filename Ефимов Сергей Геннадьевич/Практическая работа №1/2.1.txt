@@ -5,9 +5,20 @@ int main()
 	float a, b, r;
 	char op;
 	cin >> a >> op >> b;
-	if (op == '+') r = a + b;
-	else if (op == '-') r = a - b;
-	else if (op == '*') r = a * b;
-	else if (op == '/') r = a / b;
-	cout << r;
+
+	switch (op)
+	{
+	case '+':
+		cout << a + b;
+		break;
+	case '-':
+		cout << a - b;
+		break;
+	case '*':
+		cout << a * b;
+		break;
+	case '/':
+		cout << a / b;
+		break;
+	}
 }
