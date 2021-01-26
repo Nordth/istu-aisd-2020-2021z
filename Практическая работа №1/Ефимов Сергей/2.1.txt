@@ -1,0 +1,53 @@
+﻿using System;
+
+namespace Pr2
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.WriteLine("Введите через пробел \"число\" + \"операция\" + \"число\"");
+            string[] nums_and_symblol = Console.ReadLine().Split(' ');
+            double a = double.Parse(nums_and_symblol[0]);
+            double b = double.Parse(nums_and_symblol[2]);
+            string sign = nums_and_symblol[1];
+
+            switch (sign)
+            {
+                case "+":
+                    {
+                        Console.WriteLine("Ответ " + a + sign + b + "=" + (a + b));
+                        break;
+                    }
+                case "-":
+                    {
+                        Console.WriteLine("Ответ " + a + sign + b + "=" + (a - b));
+                        break;
+                    }
+                case "*":
+                    {
+                        Console.WriteLine("Ответ " + a + sign + b + "=" + (a * b));
+                        break;
+                    }
+                case "/":
+                    {
+                        if (b == 0)
+                        {
+                            Console.WriteLine("ошибка");
+                            break;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Ответ " + a + sign + b + "=" + (a / b));
+                            break;
+                        }
+                    }
+                default:
+                    {
+                        Console.WriteLine("Неверный знак операции");
+                        break;
+                    }
+            }
+        }
+    }
+}
