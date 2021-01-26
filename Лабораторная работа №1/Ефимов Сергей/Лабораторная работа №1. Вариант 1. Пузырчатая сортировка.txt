@@ -1,0 +1,33 @@
+using System;
+
+namespace ConsoleApp3
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            int[] arr = { 1, 333, 444, 123, 5555, 66666, 9999, 77, 82, 12 };
+
+            int temp = 0;
+
+            for (int write = 0; write < arr.Length; write++)
+            {
+                for (int sort = 0; sort < arr.Length - 1; sort++)
+                {
+                    if (arr[sort] > arr[sort + 1]) //if the left side value is greater than right side then swap the value
+                    {
+                        //swapping 
+                        temp = arr[sort + 1];
+                        arr[sort + 1] = arr[sort];
+                        arr[sort] = temp;
+                    }
+                }
+            }
+
+            for (int i = 0; i < arr.Length; i++)
+                Console.Write(arr[i] + " ");
+
+            Console.ReadKey();
+        }
+    }
+}
