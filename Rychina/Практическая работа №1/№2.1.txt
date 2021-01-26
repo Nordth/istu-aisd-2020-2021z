@@ -1,0 +1,28 @@
+#include <iostream>
+using namespace std;
+
+int main()
+{
+    setlocale(LC_ALL, "Russian");
+    int a,b,r;
+    char op;
+    cout << "Первое число : ";
+    cin >> a;
+    cout << "Второе число: ";
+    cin >> b;
+    cout << "Операция:";
+    cin >> op;
+    if (op == '+')   
+        r = a + b;
+    if (op == '-')
+      r=  a - b;
+    if (op == '*')
+       r=  a * b;
+    if (op == '/')
+       r= a / b;
+    cout << r;
+    
+
+    
+	return 0;
+}

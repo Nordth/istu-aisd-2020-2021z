@@ -1,0 +1,25 @@
+#include <iostream>
+using namespace std;
+
+int main()
+{
+    setlocale(LC_ALL, "Russian");
+    int i, s = 0, l, size;
+    float A[100];
+    cout << "Введите колличество элементов массива ";
+    cin >> size;
+    cout << "Введите массив ";
+    for (i = 0; i < size; i++)
+        cin >> A[i];
+    for (i = 0; i < size; i++)
+        s += A[i];
+    l = s / size;
+
+    for (i = 0; i < size; i++)
+    {
+        if (A[i] < l)
+            A[i] = 0;
+        cout << A[i]<<" ";
+    }
+    return 0;
+}
