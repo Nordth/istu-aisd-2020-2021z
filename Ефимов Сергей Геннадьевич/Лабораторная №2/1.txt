@@ -1,0 +1,81 @@
+using System;
+using System.Collections.Generic;
+
+namespace Лабораторная_работа__2
+{
+    class Program
+    {
+        List<int> list = new List<int>();
+
+        void What_to_do(string number)
+        {
+            int index = 0, element = 0;
+            switch (number)
+            {
+                case "1":
+                    Console.Write("Число которое хотите добавить: ");
+                    list.Add(int.Parse(Console.ReadLine()));
+                    info();
+                    break;
+                case "2":
+                    Console.Write("Индекс :");
+                    index = (int.Parse(Console.ReadLine())) - 1;
+                    Console.Write("Элемент: ");
+                    element = (int.Parse(Console.ReadLine()));
+                    list.Insert(index, element);
+                    info();
+                    break;
+                case "3":
+                    Console.Write("Индекс: ");
+                    index = (int.Parse(Console.ReadLine()));
+                    Console.WriteLine(list[index]);
+                    info();
+                    break;
+                case "4":
+                    Console.Write("Элемент, который следует удалить: ");
+                    element = (int.Parse(Console.ReadLine()));
+                    list.RemoveAt(list.IndexOf(element));
+                    info();
+                    break;
+                case "5":
+                    foreach (int i in list)
+                    {
+                        Console.Write(i + " ");
+                    }
+                    Console.Write("\n");
+                    info();
+                    break;
+                case "6": //переделать чуть текст. Это для проверки.
+                    Console.WriteLine($"{GC.GetTotalMemory(false)} байт занято до очистки");
+                    GC.Collect(1, GCCollectionMode.Forced);
+                    Console.WriteLine($"{GC.GetTotalMemory(false)} байт занято после очистки");
+                    info();
+                    break;
+                default:
+                    Console.Write("неверная команда");
+                    info();
+                    break;
+
+
+            }
+        }
+
+        void info()
+        {
+            Console.WriteLine("Введите \"2\" для добавления элемента перед индексом\n" +
+                "Введите \"3\" для показа элемента по индексу\n" +
+                "Введите \"4\" для удалания элемента\n" +
+                "Введите \"5\" для показа всех элементов списка\n" +
+                "Введите \"6\" для освобождения памяти\n");
+            string number = Console.ReadLine();
+            What_to_do(number);
+        }
+
+        static void Main(string[] args)
+        {
+            Program q = new Program();
+            q.info();
+            Console.ReadKey();
+        }
+    }
+}
