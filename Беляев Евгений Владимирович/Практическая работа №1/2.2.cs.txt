@@ -1,0 +1,27 @@
+namespace helloworld
+{
+    class Program
+    {
+        static void Main()
+        {
+            int n = int.Parse(Console.ReadLine());
+            Console.WriteLine("Введите числа через пробел: ");
+            string arrStr = Console.ReadLine();
+            string[] nums = arrStr.Split(" ");
+            int[] arr = new int[n];
+            for (int i = 0; i < n; i++)
+            {
+                arr[i] = int.Parse(nums[i]);
+            }
+            for (int i = 0; i < n/2; i++)
+            {
+                int t = arr[i];
+                arr[i] = arr[n - i - 1];
+                arr[n - i - 1] = t;
+            }
+            for (int i = 0; i < n; i++)
+            {
+                Console.WriteLine(arr[i]);
+            }
+        }
+    }

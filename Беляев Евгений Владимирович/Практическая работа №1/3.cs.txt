@@ -1,0 +1,24 @@
+namespace helloworld
+{
+    class Program
+    {
+        static void Main()
+        {
+            int[] arr = { 1, 2, 3, 4, 5, 6, 7 };
+            Console.WriteLine(SumArray(arr));
+        }
+
+        static int SumArray(int[] arr)
+        {
+            return arr.Length == 1 ? arr[0] : SumArray(HalfArray(arr, true)) + SumArray(HalfArray(arr, false));
+        }
+
+        static int[] HalfArray(int[] arr, bool left)
+        {
+            int[] newArr = new int[arr.Length / 2 + (left ? 0 : (arr.Length % 2 == 0 ? 0 : 1))];
+            for (int i = 0; i < newArr.Length; i++)
+                newArr[i] = arr[i + (left ? 0 : arr.Length / 2)];
+            return newArr;
+        }
+    }
+}
