@@ -1,0 +1,111 @@
+﻿using System;
+using System.Collections;
+
+namespace ArrayStack
+{
+    class Program
+    {
+        public class Stack<T>
+        {
+            private int[] items;
+            int count;
+            const int n = 10;
+            public Stack()
+            {
+                items = new int[n]; //Инициализация
+            }
+
+            public bool IsEmpty
+            {
+                get { return count == 0; }
+            }
+            public int Count
+            {
+                get { return count; }
+            }
+
+            public void Push(int item)//Вставка элемента
+            {
+                // увеличиваем стек
+                if (count == items.Length)
+                    Resize(items.Length * 2);//увелечение размера буфера в 2 раза
+
+                items[count++] = item;
+            }
+            public int Pop() //Извлечение элемента
+            {
+                // если стек пуст, выбрасываем исключение
+                if (IsEmpty)
+                    throw new InvalidOperationException("Стек пуст");
+                int item = items[--count];
+                items[count] = default(int); // сбрасываем ссылку
+
+                if (count > 0 && count < items.Length - 10)
+                    Resize(items.Length - 10);
+
+                return item;
+            }
+            private void Resize(int max)//создали новый буфер, скопировали существующие элементы и удаляем старый
+            {
+                int[] tempItems = new int[max];
+                for (int i = 0; i < count; i++)
+                    tempItems[i] = items[i];
+                items = tempItems;
+            }
+
+            public void Clears() // очистка памяти
+            {
+                Console.WriteLine($"{GC.GetTotalMemory(false)} байт занято до очистки");
+                GC.Collect(1, GCCollectionMode.Forced);
+                Console.WriteLine($"{GC.GetTotalMemory(false)} байт занято после очистки");
+            }
+
+            public void Clone(int[] newStack)//клонирование 
+            {
+                for (int i = 0; i < count; i++)
+                {
+                    newStack[i] = items[i];
+                }
+            }
+
+            public void Show()
+            {
+                for (int i = 0; i < count; i++)
+                {
+                    Console.Write(items[i] + " ");
+                }
+                Console.Write("\n");
+            }
+
+            public void ShowCopy(int[] array)
+            {
+                for (int i = 0; i < count-1; i++)
+                {
+                    Console.Write(array[i] + " ");
+                }
+                Console.Write("\n");
+            }
+        }
+        static void Main(string[] args)
+        {
+            Stack<int> list = new Stack<int>();
+ 
+            list.Push(999);
+            list.Push(33);
+            list.Push(100);
+            list.Push(2000);
+            list.Show(); //999 33 100 2000
+            list.Pop(); //999 33 100
+            list.Pop(); //999 33
+            list.Show(); //показывает все великолепно!
+            int[] copyArray = new int[list.Count];
+            list.Clone(copyArray);
+            list.Push(30);//999 33 30
+            Console.Write("Вот оригинальный, который я уже изменил: ");
+            list.Show();//999 33 30
+            Console.Write("А вот старая копия стека: ");
+            list.ShowCopy(copyArray); //999 33
+            list.Clears();
+        }
+    }
+}
