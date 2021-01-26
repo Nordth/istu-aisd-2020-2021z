@@ -1,0 +1,66 @@
+using System;
+using System.Collections.Generic;
+
+namespace Queue
+{
+    class Program
+    {
+        static void AddToQueue(Queue<int> queue, int num)
+        {
+            queue.Enqueue(num);
+        }
+
+        static void ReemoveToQueue(Queue<int> queue)
+        {
+            if (queue.Count == 0) Console.WriteLine("В структуре нет элементов");
+            else
+            {
+                int num = queue.Dequeue();
+                Console.WriteLine($"Элемент со значением {num} удален из структуры");
+            }
+        }
+
+        static Queue<int> CloneQueue(Queue<int> queue)
+        {
+            Queue<int> cloneNumbers = new Queue<int>(queue);
+            return cloneNumbers;
+        }
+
+        static void PrintQueue(Queue<int> queue)
+        {
+            foreach (int elem in queue)
+            {
+                Console.Write($"{elem}  ");
+            }
+            Console.WriteLine();
+        }
+
+        //метод очистки памяти (хотя и без него сборщик бы справился вполне себе:-) )
+        static void FreeingUpMemory()
+        {
+            Console.WriteLine(GC.GetTotalMemory(false));
+            GC.Collect();
+            Console.WriteLine(GC.GetTotalMemory(true));
+        }
+
+        static void Main(string[] args)
+        {
+            Queue<int> numbers = new Queue<int>();
+            AddToQueue(numbers, 5);
+            AddToQueue(numbers, 7);
+            AddToQueue(numbers, 9);
+            PrintQueue(numbers);
+            ReemoveToQueue(numbers);
+            PrintQueue(numbers);
+            Queue<int> copyQueue = CloneQueue(numbers);
+            PrintQueue(copyQueue);
+            AddToQueue(copyQueue, 18);
+            PrintQueue(copyQueue);
+            PrintQueue(numbers);
+            numbers = null;
+            FreeingUpMemory();
+
+
+        }
+    }
+}
