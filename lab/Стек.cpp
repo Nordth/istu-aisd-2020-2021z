@@ -9,24 +9,24 @@ int main() {
 	while (imenu != 6) {
 		//menu output
 		system("cls");
-		std::cout << "Размер стека:		" << mass.size() << std::endl;
-		std::cout << "Размер копии стека:	" << copymass.size() << std::endl;
+		std::cout << "Stack size:		" << mass.size() << std::endl;
+		std::cout << "Stack copy size:	" << copymass.size() << std::endl;
 		std::cout << "------------------------" << std::endl;
-		std::cout << "1. Вставка эллемента." << std::endl << "2. Извлечь эллемент." << std::endl << "3. Клонирование." << std::endl << "4. Извлечь эллемент из копии." << std::endl << "5. Очистить стек." << std::endl << "6. Выход." << std::endl << ">> ";
+		std::cout << "1. Insert element." << std::endl << "2. Extract element." << std::endl << "3. Clone." << std::endl << "4. Extract item from copy." << std::endl << "5. Clear stack." << std::endl << "6. Exit." << std::endl << ">> ";
 		std::cin >> imenu;
 		switch (imenu) {
 			case 1:
 				system("cls");
-				std::cout << "Число для ввода: ";
+				std::cout << "Number to enter: ";
 				std::cin >> number1;
 				mass.push(number1);
 				break;
 			case 2:
 				system("cls");
 				if ( !mass.empty() ) {
-					std::cout << "Стек: " << mass.top() << " извлечен." << std::endl;
+					std::cout << "Stack: " << mass.top() << " extracted." << std::endl;
 					mass.pop();
-				}else{ std::cout << "Стек пустой." << std::endl; }
+				}else{ std::cout << "Empty stack." << std::endl; }
 				std::system("pause");
 				break;
 			case 3: 
@@ -36,10 +36,10 @@ int main() {
 			case 4:
 				system("cls");
 				if (!copymass.empty()) {
-					std::cout << "Стек: " << copymass.top() << " извлечен." << std::endl;
+					std::cout << "Stack: " << copymass.top() << " extracted." << std::endl;
 					copymass.pop();
 				}
-				else { std::cout << "Стек пустой." << std::endl; }
+				else { std::cout << "Empty stack." << std::endl; }
 				std::system("pause");
 				break;
 			case 5:
