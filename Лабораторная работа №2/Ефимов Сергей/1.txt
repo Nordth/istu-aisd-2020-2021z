@@ -1,81 +1,279 @@
-﻿using System;
-using System.Collections.Generic;
+﻿//Ефимов Сергей. Однонаправленный список. Вариант 1
+#include<iostream>
+#include<cstdio>
+#include<cstdlib>
+using namespace std;
 
-namespace Лабораторная_работа__2
+
+struct node
 {
-    class Program
-    {
-        List<int> list = new List<int>();
+	int info;
+	struct node* next;
+}*start;
 
-        void What_to_do(string number)
-        {
-            int index = 0, element = 0;
-            switch (number)
-            {
-                case "1":
-                    Console.Write("Число которое хотите добавить: ");
-                    list.Add(int.Parse(Console.ReadLine()));
-                    info();
-                    break;
-                case "2":
-                    Console.Write("Индекс :");
-                    index = (int.Parse(Console.ReadLine())) - 1;
-                    Console.Write("Элемент: ");
-                    element = (int.Parse(Console.ReadLine()));
-                    list.Insert(index, element);
-                    info();
-                    break;
-                case "3":
-                    Console.Write("Индекс: ");
-                    index = (int.Parse(Console.ReadLine()));
-                    Console.WriteLine(list[index]);
-                    info();
-                    break;
-                case "4":
-                    Console.Write("Элемент, который следует удалить: ");
-                    element = (int.Parse(Console.ReadLine()));
-                    list.RemoveAt(list.IndexOf(element));
-                    info();
-                    break;
-                case "5":
-                    foreach (int i in list)
-                    {
-                        Console.Write(i + " ");
-                    }
-                    Console.Write("\n");
-                    info();
-                    break;
-                case "6": //переделать чуть текст. Это для проверки.
-                    Console.WriteLine($"{GC.GetTotalMemory(false)} байт занято до очистки");
-                    GC.Collect(1, GCCollectionMode.Forced);
-                    Console.WriteLine($"{GC.GetTotalMemory(false)} байт занято после очистки");
-                    info();
-                    break;
-                default:
-                    Console.Write("неверная команда");
-                    info();
-                    break;
+class single_list
+{
+public:
+	node* create_node(int);
+	void insert_start(); //1 вставка элемента в начало
+	void insert_position(); //2 вставка элемента перед заданным индексом
+	void insert_last(); //3 вставка элемента в конец
+	void display(); //4 печать всех элементов
+	void delete_position(); //5 удаление элемента по значению
+	void search(); //6 Получение значения элемента по индексу
+	single_list()
+	{
+		start = NULL;
+	}
+};
 
+int main()
+{
+	setlocale(LC_ALL, "Russian");
+	int choice, nodes, element, position, i;
+	single_list sl;
+	start = NULL;
+	while (1)
+	{
+		cout << endl << "-----------------------------------" << endl;
+		cout << endl << "Команды однонаправленного списка" << endl;
+		cout << endl << "-----------------------------------" << endl;
+		cout << "1. Вставка элемента в начало" << endl;//+
+		cout << "2. Вставка элемента перед заданным индексом" << endl;//+
+		cout << "3. Вставка элемента в конец" << endl;//+
+		cout << "4. Печать всех элементов" << endl;//+
+		cout << "5. Удаление элемента по значению" << endl;//+
+		cout << "6. Получение значения элемента по индексу" << endl;
+		cout << "7. Выход" << endl;
+		cin >> choice;
 
-            }
-        }
+		switch (choice)
+		{
+		case 1:
+			cout << "Вставка элемента в начало" << endl;
+			sl.insert_start();
+			cout << endl;
+			break;
+		case 2:
+			cout << "Вставка элемента перед заданным индексом" << endl;
+			sl.insert_position();
+			cout << endl;
+			break;
+		case 3:
+			cout << "Вставка элемента в конец" << endl;
+			sl.insert_last();
+			cout << endl;
+			break;
+		case 4:
+			cout << "Печать всех элементов" << endl;
+			sl.display();
+			cout << endl;
+			break;
+		case 5:
+			cout << "Удаление элемента по значению" << endl;
+			sl.delete_position();
+			cout << endl;
+			break;
+		case 6:
+			cout << "Получение значения элемента по индексу" << endl;
+			sl.search();
+			cout << endl;
+			break;
+		case 7:
+			cout << "Выход" << endl;
+			exit(1);
+			break;
+		default:
+			cout << "Неправильный выбор";
+		}
+	}
+};
 
-        void info()
-        {
-            Console.WriteLine("Введите \"2\" для добавления элемента перед индексом\n" +
-                "Введите \"3\" для показа элемента по индексу\n" +
-                "Введите \"4\" для удалания элемента\n" +
-                "Введите \"5\" для показа всех элементов списка\n" +
-                "Введите \"6\" для освобождения памяти\n");
-            string number = Console.ReadLine();
-            What_to_do(number);
-        }
+node* single_list::create_node(int value)
+{
+	struct node* temp, * s;
+	temp = new(struct node);
+	if (temp == NULL)
+	{
+		cout << "Memory not allocated" << endl;
+		return temp;
+	}
+	else
+	{
+		temp->info = value;
+		temp->next = NULL;
+		return temp;
+	}
+}
 
-        static void Main(string[] args)
-        {
-            Program q = new Program();
-            q.info();
-            Console.ReadKey();
-        }
-    }
+void single_list::insert_start()
+{
+	int value;
+	cout << "Введите значение, которое хотите добавить: ";
+	cin >> value;
+	struct node* temp, * p;
+	temp = create_node(value);
+	if (start == NULL)
+	{
+		start = temp;
+		start->next = NULL;
+	}
+	else
+	{
+		p = start;
+		start = temp;
+		start->next = p;
+	}
+	cout << "Значение добавлено в начало." << endl;
+}
+
+void single_list::insert_last()
+{
+	int value;
+	cout << "Введите значение, которое хотите добавить: ";
+	cin >> value;
+	struct node* temp, * s;
+	temp = create_node(value);
+	s = start;
+	while (s->next != NULL)
+	{
+		s = s->next;
+	}
+	temp->next = NULL;
+	s->next = temp;
+	cout << "Значение добавлено в конец." << endl;
+}
+
+void single_list::insert_position()
+{
+	int value, pos, counter = 0;
+	cout << "Введите значение, которое хотите добавить: ";
+	cin >> value;
+	struct node* temp, * s = 0, * ptr = 0;
+	temp = create_node(value);
+	cout << "Введите позицию, в которую хотите вставить: ";
+	cin >> pos;
+	int i;
+	s = start;
+	while (s != NULL)
+	{
+		s = s->next;
+		counter++;
+	}
+	if (pos == 1)
+	{
+		if (start == NULL)
+		{
+			start = temp;
+			start->next = NULL;
+		}
+		else
+		{
+			ptr = start;
+			start = temp;
+			start->next = ptr;
+		}
+	}
+	else if (pos > 1 && pos <= counter)
+	{
+		s = start;
+		for (i = 1; i < pos; i++)
+		{
+			ptr = s;
+			s = s->next;
+		}
+		ptr->next = temp;
+		temp->next = s;
+	}
+	else
+	{
+		cout << "Позиция вне зоны" << endl;
+	}
+}
+
+void single_list::delete_position()
+{
+	int pos, i, counter = 0;
+	if (start == NULL)
+	{
+		cout << "Лист пуст" << endl;
+		return;
+	}
+	cout << "Введите позицию числа, которого хотите удалить: ";
+	cin >> pos;
+	struct node* s = 0, * ptr = 0;
+	s = start;
+	if (pos == 1)
+	{
+		start = s->next;
+	}
+	else
+	{
+		while (s != NULL)
+		{
+			s = s->next;
+			counter++;
+		}
+		if (pos > 0 && pos <= counter)
+		{
+			s = start;
+			for (i = 1; i < pos; i++)
+			{
+				ptr = s;
+				s = s->next;
+			}
+			ptr->next = s->next;
+		}
+		else
+		{
+			cout << "Позиция вне зоны" << endl;
+		}
+		free(s);
+		cout << "Элемент удален" << endl;
+	}
+}
+
+void single_list::search()
+{
+	int value = 0, pos = 0;
+	bool flag = false;
+	if (start == NULL)
+	{
+		cout << "Лист пуст" << endl;
+		return;
+	}
+	cout << "Введите значение, которое нужно найти: ";
+	cin >> value;
+	struct node* s;
+	s = start;
+	while (s != NULL)
+	{
+		pos++;
+		if (s->info == value)
+		{
+			flag = true;
+			cout << "Значение " << value << " найдено на позиции " << pos << endl;
+		}
+		s = s->next;
+	}
+	if (!flag)
+		cout << "Значение " << value << " не найдено" << endl;
+}
+
+void single_list::display()
+{
+	struct node* temp;
+	if (start == NULL)
+	{
+		cout << "Этот список пуст" << endl;
+		return;
+	}
+	temp = start;
+	cout << "Элементы: " << endl;
+	while (temp != NULL)
+	{
+		cout << temp->info << "->";
+		temp = temp->next;
+	}
+	cout << "Пусто" << endl;
 }
