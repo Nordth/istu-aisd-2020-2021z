@@ -29,7 +29,7 @@ int main()
 
 void choice_sort(int * arr, int size) 
 {
-	for (int i = 1; i < size - 1; ++i) {
+	for (int i = 1; i < size; ++i) {
 		int min_index = i - 1;
 		for (int j = i; j < size; ++j) {
 			if (arr[min_index] > arr[j]) {
