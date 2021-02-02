@@ -103,7 +103,7 @@ node* list::node(int a)
 }
 
 
-void list::memoryDelete() //работает
+void list::memoryDelete() 
 {
 	struct node* temp;
 	while (head)
@@ -115,7 +115,7 @@ void list::memoryDelete() //работает
 }
 
 
-void list::insert_start()//работает
+void list::insert_start()
 {
 	int number;
 	cout << "Введите значение, которое хотите добавить: ";
@@ -188,7 +188,7 @@ void list::insert_position()//работает
 	}
 }
 
-void list::delete_position()//Сделать счетчик элементов. Если он равен будет нулю.
+void list::delete_position()
 {
 	struct node* current = head;
 	struct node* next = current;
@@ -222,7 +222,7 @@ void list::delete_position()//Сделать счетчик элементов. 
 }
 
 
-void list::search(int index)//работает
+void list::search(int index)
 {
 	int size = 0;
 	struct node* element, * p;
@@ -263,7 +263,7 @@ void list::search(int index)//работает
 	}
 }
 
-void list::display()//работает
+void list::display()
 {
 	struct node* element;
 	if (head == NULL) //если в списке нет ничего
