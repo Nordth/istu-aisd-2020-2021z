@@ -1,0 +1,95 @@
+using System;
+using System.Collections;
+
+namespace HashTable
+{
+    class Program
+    {
+        //Инициализируем хеш таблицу
+        static Hashtable hashtable = new Hashtable();
+       
+        //Метод добавления нового ключа и элемента
+        static void AddNewKeyAndElemToHashTable()
+        {
+            Console.Write("Введите через пробел знаение Ключа(должен быть целочисленным) и Элемента: ");
+            string[] str = Console.ReadLine().Split(' ');
+            hashtable.Add(Convert.ToInt32(str[0]), str[1]);
+        }
+
+        //Получение значения элемента по ключу
+        public static void PrintElemутеByItsKey()
+        {
+            Console.WriteLine("Введите значение ключа");
+            var key = Convert.ToInt32(Console.ReadLine());
+            if (hashtable.ContainsKey(key) == true) Console.WriteLine($"Элемент с ключем {key}: {hashtable[key]}");
+            else
+            {
+                Console.WriteLine("Элемента с таким ключем несуществует! Попробуйте ещё раз.");
+                PrintElemутеByItsKey();
+            }
+        }
+
+
+
+        //Удаление элемента по ключу
+        static void RemoveElemутеByItsKey()
+        {
+            Console.WriteLine("Введите значение ключа");
+            var key = Convert.ToInt32(Console.ReadLine());
+            if (hashtable.ContainsKey(key))
+            {
+                hashtable.Remove(key);
+                Console.WriteLine($"Элемент с ключем {key} удален!");
+            }
+            else
+            {
+                Console.WriteLine("Элемента с таким ключем несуществует! Попробуйте ещё раз.");
+                RemoveElemутеByItsKey();
+            }
+        }
+
+        static void ClearToHashtable()
+        {
+            Console.WriteLine("Занято памяти до очистки: " + GC.GetTotalMemory(false));
+            hashtable.Clear();
+            GC.Collect();
+            Console.WriteLine("Занято памяти после очистки: " + GC.GetTotalMemory(true));            
+        }
+
+        static void Comands()
+        {
+            int comand = Convert.ToInt32(Console.ReadLine());
+            switch (comand)
+            {
+                case 0:
+                    AddNewKeyAndElemToHashTable();
+                    Comands();
+                    break;
+                case 1:
+                    RemoveElemутеByItsKey();
+                    Comands();
+                    break;
+                case 2:
+                    PrintElemутеByItsKey();
+                    Comands();
+                    break;
+                case 3:
+                    ClearToHashtable();
+                    break;
+                default:
+                    Console.WriteLine("Вы выбрали неизвестную команду ппробуйте ещё раз!");
+                    Comands();
+                    break;
+            }
+        }
+
+        static void Main(string[] args)
+        {
+            Console.WriteLine("Добавить новый элемент в таблицу - введите цифру 0\n" +
+                "Удалить элемент по его ключу - введите циру 1\n" +
+                "Вывести в консоль значение элемента по его ключу - введите цифру 2\n" +
+                "Очистить хеш таблицу - нажмите 3");
+            Comands();
+        }
+    }
+}
