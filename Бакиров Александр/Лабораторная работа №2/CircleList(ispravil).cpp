@@ -1,5 +1,4 @@
-﻿
-#include <iostream>
+﻿#include <iostream>
 #include <cstdio>
 #include <cstdlib>
 
@@ -10,17 +9,16 @@ class CircleList
 public:
 	CircleList();
 	/*
-	* Конструктор для очисти памяти
+	* Конструктор для очистки памяти
 	*/
 	~CircleList();
-
 	void AddToEnd(int data); // вставка элемента в конец списка
 	void Print(); // печать всех элементов
 	void AddOnIndex(int index, int data); // Добавление элемента в список по индексу
-	void DeleteValue(int data); // удаление элемента по его значению
+	bool DeleteValue(int data); // удаление элемента по его значению
 
 	// получение значения элемента по индексу
-	 void SearchNum(int index);
+	int SearchNum(int index);
 
 	// структура узла списка
 	struct Node
@@ -30,18 +28,26 @@ public:
 	};
 	// Указатели на первый и последующий элементы списка
 	Node* Head;
-	Node* Tail;
-	//переменная для фиксации кол-ва элементов
 	int count;
-
 };
 
 CircleList::CircleList() //изначальное значение элементов списка - NULL
 {
-	Head = Tail = NULL;
-	count = 0;
+	Head = nullptr;
+	count = 0; // не знаю как сделат без счета элементов удаление по индексу. Подсчет переходов по указателям реализовать не смог...
 }
 
+CircleList::~CircleList()
+{
+	Node* second = Head->next;
+	while (Head != second) {
+		Node* temp2 = second;
+		second = second->next;
+		delete temp2;
+	}
+	delete Head;
+	cout << "Память очищена" << endl;
+}
 
 void CircleList::AddToEnd(int data)
 {
@@ -50,124 +56,131 @@ void CircleList::AddToEnd(int data)
 	temp->data = data;
 
 	// Если присутствует первый элемент
-	if (Head != NULL)
+	if (Head != nullptr)
 	{
+		Node** temp2 = &Head->next;
+		while (*temp2 != Head)
+		{
+			temp2 = &(*temp2)->next;
+		}
+		*temp2 = temp;
 		temp->next = Head;
-		Tail->next = temp;
-		Tail = temp;
 	}
 	// Если первого элемента нет, то нужно его создать
 	else
 	{
-		Tail = Head = temp;
-		temp->next = Head;
+		Head = temp;
+		Head->next = Head;
 	}
 	count++;
 	cout << "\nЧисло " << data << " добавлено.";
 }
 
-
-void CircleList::DeleteValue(int data)
-{
-	if (Head->data == data) // Если удаляем первый элемент
-	{
-		Node* temp = Head;
-		Head = Head->next;
-		Tail->next = Head;
-		delete temp;
-		count--;
-	}
-	else
-	{
-		Node** temp2 = &Head->next; // создаем ссылку на выделяемую область памяти для указателя элемента идущего за первым
-		while (*temp2 != Head) // пробегаем по списку в поисках удаляемого значения
-		{
-			if ((*temp2)->data == data)
-			{
-				// переприсваиваем указатели перед удалением
-				Node* temp = *temp2;
-				*temp2 = (*temp2)->next;
-				delete temp;
-				count--;
-			}
-			temp2 = &(*temp2)->next;
-		}
-	}
-	cout << "\nЭлемент " << data << " удален из списка.";
-}
-
-
 void CircleList::AddOnIndex(const int index, const int data)
 {
 	// Если список пуст или индекс больше общего кол-ва элементов списка, то добавить новое значение в список
-	if (Head == NULL || index > count)
+	if (Head == nullptr || index > count)
 	{
 		AddToEnd(data);
 		return;
 	}
+	bool is_in_the_first_place = (index == 0) ? true : false;
+	int iter_count = (index == 0) ? count : index;
 	// создание ссылки на переменную temp  с типом Node*(для того,чтобы temp существовала не только в теле метода AddOnIndex)
 	// как будто это глобальная переменная, т.е указатель на конкретную область памяти, а не команда для выделения нового участка
 	// информация https://coderoad.ru/12124096
-	Node** temp = &Head;
+	Node** temp2 = &Head;
 
-	for (int x = 1; x < index; ++x)
+	for (int x = 1; x < iter_count; ++x)
 	{
-		temp = &((*temp)->next);
+		temp2 = &((*temp2)->next);
 	}
 	// создание новой области памяти
 	Node* t = new Node;
 	// передача в нее значения для вставки
 	t->data = data;
 	// создание указателя на ссылку в области памяти
-	t->next = *temp;
+	t->next = *temp2;
 	// вставка элемента
-	*temp = t;
+	*temp2 = t;
+	if (is_in_the_first_place) {
+		Head = t;
+	}
 	count++;
 	cout << "\nЧисло " << data << " добавлено по индесу " << index;
 }
 
-
-void CircleList::SearchNum(int index)
+int CircleList::SearchNum(int index)
 {
 	Node* temp;
 	temp = Head;
 	if (Head == NULL)
 	{
-		cout << "Лист пуст" << endl;
-		return;
-	}
-	else if (index>count)
-	{
-		cout << "\nПо индексу " << index << " элементов не существует";
+		cout << "Список пуст" << endl;
+		return -1;
 	}
 	else
 	{
-		for (int i = 0; i != index; i++)
+		for (int i = -2; i < index; ++i)
 		{
 			temp = temp->next;
+			if (temp == Head)
+			{
+				break;
+			}
 		}
 		cout << "\nЭлемент " << temp->data << " располагается по индексу " << index;
 	}
-	
+	return temp->data;
+
 }
 
 
-CircleList::~CircleList()
+
+bool CircleList::DeleteValue(int data)
 {
-	Tail->next = nullptr;
-	while (Head != NULL) {
-		Tail = Head;
-		Head = Head->next;
-		delete Tail;
+	if (!Head) {
+		return false;
 	}
-	Tail = nullptr;
-	cout << "Память очищена" << endl;
+
+	Node** temp2 = &Head->next;
+	if (Head->data == data) // Если удаляем первый элемент
+	{
+		for (; *temp2 != Head; temp2 = &(*temp2)->next) {}
+		*temp2 = Head->next;
+		delete Head;
+		count--;
+		if (count == 0)
+		{
+			Head = nullptr;
+			cout << "Список пуст, удалять нечего...";
+		}
+		// иначе передвигаем указатель в поиске нужного значения
+		else
+		{
+			Head = *temp2;
+		}
+		return true;
+	}
+	for (; *temp2 != Head; temp2 = &(*temp2)->next)
+	{
+		if ((*temp2)->data == data)
+		{
+			Node* DelNumber = *temp2;
+			*temp2 = (*temp2)->next;
+			delete DelNumber;
+			count--;
+			cout << "\nЭлемент " << data << " удален из списка.";
+		}
+	}
+	return false;
+	
 }
 
 void CircleList::Print()
 {
 	cout << endl << endl;
-	if (Head == NULL)
+	if (Head == nullptr)
 	{
 		cout << "Список пуст";
 		return;
@@ -175,28 +188,23 @@ void CircleList::Print()
 	else
 	{
 		cout << Head->data << " ";
-		Node* temp = Head->next;
-		do
+		Node* temp2 = Head->next;
+		for (; temp2 != Head; temp2 = temp2->next)
 		{
-			cout << temp->data << " ";
-			temp = temp->next;
-
-		} while (temp != Head);	
+			cout << temp2->data << " ";
+		}
 	}
 	cout << endl;
 }
 
 int main()
 {
-	
-
 	CircleList* circlelist = new CircleList();
 	setlocale(LC_ALL, "Russian");
 	circlelist->AddToEnd(4);
 	circlelist->AddToEnd(5);
 	circlelist->AddToEnd(5);
 	circlelist->Print();
-	circlelist->~CircleList();
 	circlelist->AddToEnd(7);
 	circlelist->AddToEnd(8);
 	circlelist->AddToEnd(9);
@@ -211,11 +219,8 @@ int main()
 	circlelist->Print();
 	circlelist->AddOnIndex(1, 12);
 	circlelist->AddOnIndex(2, 13);
-	circlelist->DeleteValue(12);
-	circlelist->Print();
-	circlelist->SearchNum(10);
-	circlelist->SearchNum(2);
+	circlelist->SearchNum(3);
+	circlelist->SearchNum(6);
 	
+
 }
-
-

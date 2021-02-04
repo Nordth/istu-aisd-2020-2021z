@@ -5,11 +5,13 @@ using namespace std;
 int top;// врехний элемент стека
 
 
-void DoubleArr(int Stack[], int count)
+int DoubleArr(int Stack[], int count)
 {
-	int* BiggerStack = new int[count*2];
+	int count2 = count * 2;
+	int *BiggerStack = new int[count2];
 	for (int i = 0; i < count; i++)
 		BiggerStack[i] = Stack[i];
+	return BiggerStack[count2];
 }
 
 void Push(int Stack[], int count)
@@ -18,7 +20,7 @@ void Push(int Stack[], int count)
 	cout << "Введите число, которое будет добавлено в стек ";
 	cin >> data;
 
-	if (top == (count - 1))
+	if (top == (count))
 	{
 		DoubleArr(Stack, count);
 	}
@@ -67,27 +69,34 @@ void Pop(int Stack[])
 	Print(Stack);
 }
 
-void Copy(int Stack[])//Клонирую стек путем выделения новой памяти и занесения в нее всех значений из оригинального стека
-{
+void Copy(int Stack[],int CopiedStack[])//Клонирую стек путем выделения новой памяти и занесения в нее всех значений из оригинального стека
+{ 
+	
 	cout << "Копирую стек ... ";
-	int* copiedStack = Stack;
-
-	cout << "\nКопия стека выглядит так: \n";
-	Print(copiedStack);
+	for (int i = top; i >= 0; --i)
+	{
+		CopiedStack[i] = Stack[i];
+	}
+	cout << "\nКопия стека:\n ";
+	Print(CopiedStack);
+	cout << "\nОригинал:\n ";
+	Print(Stack);
 }
 
 // Очистка памяти от стека
 void ClearMem(int Stack[])
 {
 	cout << "Удаляю стек... ";
-	delete[] Stack;
+	free(Stack);
 	top = -1;
-	cout << "\nПамять очищена!\n";
+	Print(Stack);
+	cout <<"\nПамять очищена!\n";
 }
 
 
 int main()
 {
+	int* CopiedStack = new int[100];
 	top = -1; // изначальное значение положения первого элемента. Не 0, т.к. реализуем на базе массива
 	int count = 10; // количество элементов стека.
 	int data; //значение элемента стека.
@@ -100,11 +109,16 @@ int main()
 	Push(Stack,count);
 	Push(Stack,count);
 	Push(Stack,count);
+	Push(Stack,count);
+	Push(Stack,count);
+	Push(Stack,count);
+	Push(Stack,count);
+	Push(Stack,count);
+	Push(Stack,count);
+	Push(Stack,count);
+	Push(Stack,count);
 	Print(Stack);
 	Pop(Stack);
-	Copy(Stack);
-	ClearMem(Stack);
-	Push(Stack, count);
-	Print(Stack);
+	Copy(Stack, CopiedStack);
 	return 0;
 }
