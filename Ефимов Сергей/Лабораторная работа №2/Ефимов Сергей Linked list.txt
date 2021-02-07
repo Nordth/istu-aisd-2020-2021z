@@ -1,0 +1,320 @@
+﻿//Ефимов Сергей. Однонаправленный список. Вариант 1
+#include<iostream>
+#include<cstdio>
+#include<cstdlib>
+using namespace std;
+
+
+struct node
+{
+	int data;
+	struct node* next;
+}*head;
+
+class list
+{
+public:
+	node* node(int);
+	void insert_start(); // вставка элемента в начало
+	void insert_position(); // вставка элемента перед заданным индексом
+	void insert_end(); // вставка элемента в конец
+	void display(); // печать всех элементов
+	void delete_position(); // удаление элемента по значению
+	void memoryDelete();//освобождение памяти
+	void search(int); // Получение значения элемента по индексу
+	list()
+	{
+		head = NULL;
+	}
+};
+
+int main()
+{
+	setlocale(LC_ALL, "Russian");
+	int command;
+	bool process = true;
+	list list;
+	head = NULL;
+
+	cout << "0. Вставка элемента в конец" << endl;
+	cout << "1. Вставка элемента в начало" << endl;
+	cout << "2. Вставка элемента перед заданным индексом" << endl;
+	cout << "3. Печать всех элементов" << endl;
+	cout << "4. Удаление элемента по значению" << endl;
+	cout << "5. Получение значения элемента по индексу" << endl;
+	cout << "6. Освобождение памяти от структуры данных" << endl;
+	cout << "7. Выход" << endl;
+	while (process == true)
+	{
+		cout << "Что вы хотите сделать? ";
+
+		cin >> command;
+
+		switch (command)
+		{
+		case 0:
+			//" Вставка элемента в конец";
+			list.insert_end();
+			cout << endl;
+			break;
+		case 1:
+			// "Вставка элемента в начало. ";
+			list.insert_start();
+			cout << endl;
+			break;
+		case 2:
+			// "Вставка элемента перед заданным индексом. ";
+			list.insert_position();
+			cout << endl;
+			break;
+		case 3:
+			// "Печать всех элементов. ";
+			list.display();
+			cout << endl;
+			break;
+		case 4:
+			//"Удаление элемента по значению. ";
+			list.delete_position();
+			cout << endl;
+			break;
+		case 5:
+			// "Получение значения элемента по индексу. ";
+			int index; cout << endl << "Введите индекс: ";  cin >> index;
+			list.search(index);
+			cout << endl;
+			break;
+		case 6:
+			// "Освобождение памяти от структуры данных. ";
+			list.memoryDelete();
+			break;
+		case 7:
+			cout << endl << endl << "Завершение программы";
+			return 0;
+			break;
+
+		default:
+			cout << "Неправильный выбор";
+		}
+		cout << endl << endl;
+	}
+};
+
+node* list::node(int a)
+{
+	struct node* temp;
+	temp = new(struct node);
+	temp->data = a;
+	temp->next = NULL;
+	return temp;
+}
+
+
+void list::memoryDelete() 
+{
+	struct node* temp;
+	while (head)
+	{
+		temp = head;
+		head = head->next;
+		delete temp;
+	}
+}
+
+
+void list::insert_start()
+{
+	int number;
+	cout << "Введите значение, которое хотите добавить: ";
+	cin >> number;
+	struct node* temp, * p;
+	temp = node(number);
+	if (head == NULL)
+	{
+		head = temp;
+		head->next = NULL;
+	}
+	else
+	{
+		p = head;
+		head = temp;
+		head->next = p;
+	}
+}
+
+void list::insert_position()
+{
+	int number, index, size = 0;
+	cout << "Введите значение, которое хотите добавить: ";
+	cin >> number;
+	struct node* temp, * p = 0, * p2 = 0;
+	temp = node(number);
+	cout << "Введите индекс, перед которой хотите вставить";
+	cin >> index;
+	int i;
+	p = head;
+	while (p != NULL)
+	{
+		p = p->next;
+		size++;
+	}
+	if (index == 0)
+	{
+		cout << "Невозьможно, не существует такого индекса";
+	}
+
+
+	if (index == 1)
+	{
+		if (head == NULL)
+		{
+			head = temp;
+			head->next = NULL;
+		}
+		else
+		{
+			p2 = head;
+			head = temp;
+			head->next = p2;
+		}
+	}
+	else if (index > 1 && index <= size)
+	{
+		p = head;
+		for (i = 1; i < index; i++)
+		{
+			p2 = p;
+			p = p->next;
+		}
+		p2->next = temp;
+		temp->next = p;
+	}
+	else
+	{
+		cout << "Позиция вне зоны" << endl;
+	}
+}
+
+void list::delete_position()//Сделать счетчик элементов. Если он равен будет нулю.
+{
+	struct node* current = head;
+	struct node* next = current;
+	struct node* prev = head;
+	int number;
+	cout << "Введите число, которое нужно удалить: ";
+	cin >> number;
+	while (current != NULL)
+	{
+		if (current->data == number)
+		{
+			break;
+		}
+		else
+		{
+			cout << "Число " << current->data << " не соответствует" << number << endl;
+			prev = current;
+			current = current->next;
+		}
+	}
+	if (current == NULL)
+	{
+		cout << "Число не найдено.";
+	}
+	else
+	{
+		cout << "Удаление числа " << current->data << endl;
+		prev->next = current->next;
+		free(current);
+	}
+}
+
+
+void list::search(int index)//работает
+{
+	int size = 0;
+	struct node* element, * p;
+	element = head;
+	if (head == NULL)
+	{
+		cout << "Лист пуст" << endl;
+		return;
+	}
+	p = head;
+	while (p != NULL)
+	{
+		p = p->next;
+		size++;//считаю размер списка, чтобы потом проверить возможен ли поиск
+	}
+
+	if (index < size)
+	{
+		if (index == 0)
+		{
+			cout << "Значение - " << element->data;
+		}
+		else {
+			for (int i = 0; i != index; i++)
+			{
+				element = element->next;
+
+				if (i == index - 1)
+				{
+					cout << "Значение - " << element->data;
+				}
+			}
+		}
+	}
+	else
+	{
+		cout << "Индекс за пределами списка";
+	}
+}
+
+void list::display()
+{
+	struct node* element;
+	if (head == NULL) //если в списке нет ничего
+	{
+		cout << "Этот список пуст" << endl;
+		return;
+	}
+	element = head;
+	cout << endl << endl << endl << "Элементы: ";
+	while (element != NULL)
+	{
+		if (element->next != NULL)
+		{
+			cout << element->data << ", ";
+			element = element->next;
+		}
+		else
+		{
+			cout << element->data;
+			element = element->next;
+		}
+	}
+	cout << endl;
+}
+
+void list::insert_end()
+{
+	struct node* temp, * h;
+	int number;
+	cout << "Введите число, которое хотите поместить в конец списка: ";
+	cin >> number;
+	temp = node(number);
+	h = head;
+	if (head == NULL)
+	{
+		head = temp;
+		head->next = NULL;
+	}
+	else 
+	{
+		while (h->next != NULL)
+		{
+			h = h->next;
+		}
+		temp->next = NULL;
+		h->next = temp;
+	}
+}
