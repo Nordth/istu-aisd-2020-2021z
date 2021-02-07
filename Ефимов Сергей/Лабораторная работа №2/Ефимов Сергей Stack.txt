@@ -1,0 +1,122 @@
+﻿#include <iostream>
+using namespace std;
+class Stack
+{
+private:
+	int* array;
+	int up = -1; //индекс вершины стека
+	int max = 3; //начальный буфер
+public:
+	Stack();
+	Stack(const Stack* otherStack);
+	Stack* copy();
+	void push();//добавление
+	int pop(); //извлечение
+	void showstack();//показ стека
+	void showstackCopy(const Stack* otherStack);
+	void memoryDelete();//очищение памяти//копирование
+	void doubleSize();//увеличение размера
+};
+
+int main()
+{
+	setlocale(LC_ALL, "Russian");
+	Stack* stack = new Stack();
+
+	stack->push();
+	stack->push();
+	stack->pop();
+	stack->pop();
+	stack->showstack();
+
+	stack->push();
+	stack->push();
+	Stack* CopiedStack = stack->copy();
+
+	stack->memoryDelete();
+}
+
+Stack::Stack()
+{
+	up = -1; //индекс верхнего элемента. если он -1, значит стек пуст
+	array = new int[max];
+}
+
+void Stack::push()
+{
+	cout << "\nКакое число добавить? ";
+	int num; cin >> num;
+	up++;
+	if (up >= max - 1)
+	{
+		doubleSize();
+	}
+	array[up] = num;
+	showstack();
+}
+
+void Stack::doubleSize()//увеличение буфера в два раза
+{
+	int t = 0;
+	int* temp = new int[max * 2];
+	for (int i = 0; i < max; i++, t++)
+	{
+		temp[t] = array[i];
+	}
+	max = max * 2;
+	up = t - 1;
+	delete[] array;
+	array = temp;
+}
+
+int Stack::pop()
+{
+	int element;
+	if (up == -1)
+	{
+		element = 0;
+	}
+	else
+	{
+		element = array[up];
+		--up;
+	}
+	return element;
+}
+
+
+void Stack::memoryDelete()
+{
+	free(array);
+	up = -1;
+}
+
+void Stack::showstack()
+{
+	cout << "\nЭлементы: ";
+	if (up == -1)
+	{
+		cout << "пуст";
+	}
+
+	else
+	{
+		for (int i = up; i >= 0; --i)
+			cout << array[i] << " ";
+	}
+}
+
+Stack* Stack::copy()
+{
+	return new Stack(this);
+}
+
+Stack::Stack(const Stack* copy)
+{
+	max = copy->max;
+	array = new int[max];
+	for (int i = 0; i <= copy->up; i++) {
+		array[i] = copy->array[i];
+	}
+	up = copy->up;
+}
