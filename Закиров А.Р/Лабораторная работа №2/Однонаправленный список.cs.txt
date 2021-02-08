@@ -1,0 +1,193 @@
+using System;
+using System.Collections;
+
+namespace UnidirectionalList
+{
+    class Item
+    {
+        public int Value;
+        public Item Next;
+        public Item(int value)
+        {
+            Value = value;
+            Next = null;
+        }
+    }
+    class LinkedList : IEnumerable
+    {
+        public Item head { get; set; }
+        public int count;
+
+        public LinkedList()
+        {
+            head = null;
+            count = 0;
+        }
+
+        public void AddToList(int value)
+        {
+            var elem = new Item(value);
+            if (head == null)
+            {
+                head = elem;
+            }
+            else
+            {
+                var current = head;
+                while (current.Next != null)
+                {
+                    current = current.Next;
+                }
+                current.Next = elem;
+            }
+            count++;
+        }
+
+        public void InsertElemByIndex(int index, int value)
+        {
+            var elem = new Item(value);
+            if (index > count || index < 0) Console.WriteLine("Элемента с индексом " + index + " не существует");
+            else
+            {
+                var current = head;
+                var previous = head.Next;
+                if(index == 0)
+                {
+                    elem.Next = current;
+                    head = elem;
+                }
+                else
+                {
+                    for(int i = 0; i < index - 1; i++)
+                    {
+                        current = current.Next;
+                        previous = previous.Next;
+                    }
+                    elem.Next = previous;
+                    current.Next = elem;
+                }
+                count++;
+            }
+        }
+
+        public void Remove(int value)
+        {
+            var current = head;
+            var previous = head.Next;
+            bool flag = false;
+            if(current.Value == value)
+            {
+                head = current.Next;
+                flag = true;
+            }
+            else
+            {
+                while(previous != null)
+                {
+                    if(previous.Value == value)
+                    {
+                        current.Next = previous.Next;
+                        flag = true;
+                        break;
+                    }
+                    current = current.Next;
+                    previous = previous.Next;
+                }
+            }
+            if (flag == true)
+            {
+                Console.WriteLine("Элемент со значением " + value + " удален");
+                count--;
+            }
+            else Console.WriteLine("Элемент со значением " + value + " отсутствует в списке");
+        }
+
+        public int GetValueByIndex(int index)
+        {
+            if (index > count || index < 0)
+            {
+                Console.WriteLine("Элемента с индексом " + index + " не существует");
+                throw new IndexOutOfRangeException("Элемента с индексом " + index + " не существует");
+            }
+            else
+            {
+                var current = head;
+                var previous = head.Next;
+                int returnElem;
+                if (index == 0)
+                {
+                    returnElem = head.Value;
+                    return returnElem;
+                }
+                else
+                {
+                    for (int i = 0; i < index; i++)
+                    {
+                        current = current.Next;
+                        previous = previous.Next;
+                    }
+                    returnElem = current.Value;
+                    return returnElem;
+                }
+            }
+        }
+
+        public void PrintAllListElements()
+        {
+            foreach(var elem in this)
+            {
+                Console.Write(elem + " ");
+            }
+            Console.WriteLine();
+        }
+
+        public void Clear()
+        {
+            head = null;
+            head.Next = null;
+            count = 0;
+        }
+          
+
+        public IEnumerator GetEnumerator()
+        {
+            return ((IEnumerable)this).GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            Item current = head;
+            while (current != null)
+            {
+                yield return current.Value;
+                current = current.Next;
+            }
+        }
+    }
+
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            LinkedList list = new LinkedList();
+            list.AddToList(1);
+            list.AddToList(2);
+            list.AddToList(3);
+            list.PrintAllListElements();
+            list.InsertElemByIndex(1, 5);
+            list.PrintAllListElements();
+            list.InsertElemByIndex(3, 9);
+            list.PrintAllListElements();
+            list.AddToList(7);
+            list.PrintAllListElements();
+            list.Remove(1);
+            list.PrintAllListElements();
+            list.Remove(9);
+            list.PrintAllListElements();
+            Console.WriteLine(list.GetValueByIndex(2));
+            list.Clear();
+            list.PrintAllListElements();
+
+        }
+    }
+}

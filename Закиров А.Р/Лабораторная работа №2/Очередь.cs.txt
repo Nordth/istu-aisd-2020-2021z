@@ -1,0 +1,139 @@
+using System;
+using System.Collections;
+
+namespace Queue
+{
+    public class ArrQueue<T> : IEnumerable
+    {
+        private int head = -1;
+        private int tail = -1;
+        private int count = 0;
+        private int size;
+        private T[] arr;
+
+        public ArrQueue(int size)
+        {
+            this.size = size;
+            this.arr = new T[size];
+        }
+
+        public bool ArrFull()
+        {
+            return tail == size - 1;
+        }
+        public bool ArrEmpty()
+        {
+            return count == 0;
+        }
+
+        public void AddToQueue(T item)
+        {
+            if (this.ArrFull())
+            {
+                Console.WriteLine("Размер буфера очереди равен " + arr.Length + " так как очередь заполнена ее размер будет увеличен в два раза");
+                size = size * 2;
+                Array.Resize(ref arr, size);
+                Console.WriteLine("Теперб размер буфера очереди равен " + arr.Length);
+            }
+            arr[++tail] = item;
+            count++;
+        }
+
+        public T Remove()
+        {
+            if (this.ArrEmpty())
+                throw new Exception("Очередь не заполнена.");
+            T value = arr[++head];
+            count--;
+            if (head == tail)
+            {
+                head = -1;
+                tail = -1;
+            }
+            Console.WriteLine("Элемент со значением " + value + " извлечен из очереди");
+            return value;
+        }
+
+        public ArrQueue<T> Clone()
+        {
+            ArrQueue<T> newQueue = new ArrQueue<T>(this.size);
+            newQueue.arr = this.arr;
+            newQueue.count = this.count;
+            newQueue.head = this.head;
+            newQueue.tail = this.tail;
+            return newQueue;
+        }
+
+        public void Clear()
+        {
+            this.head = 0;
+            this.tail = 0;
+            this.count = 0;
+            this.size = 0;
+            this.arr = null;
+
+        }
+
+        public IEnumerator GetEnumerator()
+        {
+            for (int i = head + 1; i <= tail; i++)
+                yield return arr[i];
+        }
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return this.GetEnumerator();
+        }
+    }
+
+    class ProgramI
+    {
+        static void Main(string[] args)
+        {
+            ArrQueue<int> queue = new ArrQueue<int>(5);
+            queue.AddToQueue(1);
+            queue.AddToQueue(2);
+            queue.AddToQueue(3);
+            queue.AddToQueue(4);
+            queue.AddToQueue(5);
+            foreach(var elem in queue)
+            {
+                Console.Write(elem + " ");
+            }
+            Console.WriteLine();
+            queue.Remove();
+            foreach (var elem in queue)
+            {
+                Console.Write(elem + " ");
+            }
+            Console.WriteLine();
+            var newQueue = queue.Clone();
+            foreach (var elem in newQueue)
+            {
+                Console.Write(elem + " ");
+            }
+            Console.WriteLine();
+            newQueue.Remove();
+            foreach (var elem in newQueue)
+            {
+                Console.Write(elem + " ");
+            }
+            Console.WriteLine();
+            foreach (var elem in queue)
+            {
+                Console.Write(elem + " ");
+            }
+            Console.WriteLine();
+            queue.Clear();
+            foreach (var elem in queue)
+            {
+                Console.Write(elem + " ");
+            }
+            Console.WriteLine();
+            foreach (var elem in newQueue)
+            {
+                Console.Write(elem + " ");
+            }
+            Console.WriteLine();
+        }
+    }
+}
