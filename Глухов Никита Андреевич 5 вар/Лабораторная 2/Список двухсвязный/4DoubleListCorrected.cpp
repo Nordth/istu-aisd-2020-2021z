@@ -13,17 +13,17 @@ struct DoubleList {
 // Шапка для вывода меню 
 void Hat();
 // Вывод элементов списка.
-void Output(DoubleList* begin, DoubleList* end);
+void Output(DoubleList* begin);
 // Добавление элемента в список.(элементы добавляются в конец)
-void Input(DoubleList** begin, DoubleList** end);
+void Input(DoubleList** begin);
 //Вывод элемента по индексу
-void IndexElementOutput(DoubleList** begin, DoubleList** end);
+void IndexElementOutput(DoubleList** begin);
 // Добавление элемента перед заданным индексом.
-void CopyElementFrontIndex(DoubleList** begin, DoubleList** end);
+void CopyElementFrontIndex(DoubleList** begin);
 // Удаление элемента по значению 
-void DeletingElementbyValue(DoubleList** begin, DoubleList** end);
+void DeletingElementbyValue(DoubleList** begin);
 // Очистака списка.
-void DeleteList(DoubleList** begin, DoubleList** end);
+void DeleteList(DoubleList** begin);
 
 using namespace std;
 
@@ -41,27 +41,27 @@ int main()
         switch (InputStat) {
         case '0':
             // Выход, удаление списка.
-            DeleteList(&Begin, &End);
+            DeleteList(&Begin);
             break;
         case '1':
             // Добавление элемента в список.(элементы добавляются в конец)
-            Input(&Begin, &End);
+            Input(&Begin);
             break;
         case '2':
             //Вывод элемента по индексу
-            IndexElementOutput(&Begin, &End);
+            IndexElementOutput(&Begin);
             break;
         case '3':
             // Добавление элемента перед заданным индексом.
-            CopyElementFrontIndex(&Begin, &End);
+            CopyElementFrontIndex(&Begin);
             break;
         case '4':
             // Удаление элемента по значению.
-            DeletingElementbyValue(&Begin, &End);
+            DeletingElementbyValue(&Begin);
             break;
         case '5':
             // Вывод списка. 
-            Output(Begin, End);
+            Output(Begin);
             break;
         default:
             break;
@@ -70,18 +70,18 @@ int main()
     }
 }
 // Очистака списка.
-void DeleteList(DoubleList** begin, DoubleList** end) {
+void DeleteList(DoubleList** begin) {
     cout << "Очистка списка \nВыход...";
     DoubleList* Step = *begin;
     while (Step != NULL) {
-        DoubleList* Delete = new DoubleList;
+        DoubleList* Delete;
         Delete = Step;
         Step = Step->next;
         delete Delete;
     }
 }
 // Удаление элемента по значению 
-void DeletingElementbyValue(DoubleList** begin, DoubleList** end) {
+void DeletingElementbyValue(DoubleList** begin) {
     int inputelem; DoubleList* Step = *begin;
     cout << "Для выхода в предыдущее меню введите 0\n";
     for (;;) {
@@ -107,8 +107,8 @@ void DeletingElementbyValue(DoubleList** begin, DoubleList** end) {
             continue;
         }
         // Тут надо выполнить очистку структуры DoubleList, требуемого элемента и связать адреса.
-        DoubleList* Delete = new DoubleList;
-        DoubleList* Delete2 = new DoubleList;
+        DoubleList* Delete;
+        DoubleList* Delete2;
         Delete = Step->next;
         Step = Step->prev;
         Delete->prev = Step;
@@ -120,7 +120,7 @@ void DeletingElementbyValue(DoubleList** begin, DoubleList** end) {
     }
 }
 // Добавление элемента перед заданным индексом.
-void CopyElementFrontIndex(DoubleList** begin, DoubleList** end) {
+void CopyElementFrontIndex(DoubleList** begin) {
     int inputindex, inputelem, i = 0; DoubleList* Step = *begin;
     cout << "Для выхода в предыдущее меню введите 0\n";
     for (;;) {
@@ -161,12 +161,12 @@ void CopyElementFrontIndex(DoubleList** begin, DoubleList** end) {
         Step->prev = Add;
         // Возвращаем на первый элемент.
         Step = *begin;
-        
+        //delete Add;
     }
 }
 
 //Вывод элемента по индексу
-void IndexElementOutput(DoubleList** begin, DoubleList** end) {
+void IndexElementOutput(DoubleList** begin) {
     int input, i = 0; DoubleList* Step = *begin;
     cout << "Для выхода в предыдущее меню введите 0\n";
     for (;;) {
@@ -200,7 +200,7 @@ void IndexElementOutput(DoubleList** begin, DoubleList** end) {
 
 
 
-void Input(DoubleList** begin, DoubleList** end) {
+void Input(DoubleList** begin) {
     static DoubleList* Last; int input;
     cout << "Для выхода в предыдущее меню введите 0\n";
     for (;;) {
@@ -223,12 +223,12 @@ void Input(DoubleList** begin, DoubleList** end) {
             Step->prev = Last;
             Step->next = NULL;
             Last = Step;
-            *end = Step;
+            
         }
     }
 }
 
-void Output(DoubleList* begin, DoubleList* end) {
+void Output(DoubleList* begin) {
     DoubleList* output = begin;
     cout << "Вывод элементов\n";
     while (output != NULL) {
