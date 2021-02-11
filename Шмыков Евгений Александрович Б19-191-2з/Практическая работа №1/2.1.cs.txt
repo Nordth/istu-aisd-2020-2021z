@@ -1,0 +1,20 @@
+class Program
+    {
+        static void Main()
+        {
+            Console.WriteLine("Введите первое число: ");
+            int a = int.Parse(Console.ReadLine());
+            Console.WriteLine("Введите второе число: ");
+            int b = int.Parse(Console.ReadLine());
+            Console.WriteLine("Выберете операцию(+, -, *, /): ");
+            string oper = Console.ReadLine();
+            int result = 0;
+            if (oper.Equals("+")) result = a+b;
+            else if (oper.Equals("-")) result = a - b;
+            else if (oper.Equals("*")) result = a * b;
+            else if (oper.Equals("/")) result = a / b;
+           
+            Console.WriteLine(result);
+            Console.ReadKey();
+        }
+}
