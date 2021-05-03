@@ -13,9 +13,6 @@ public class Main {
         init();
         Double avg = getAvg(getSumm(array), array.length);
         array = setValueIfLess(array, 0.0, avg);
-        calculator();
-        sumRecursive(new Integer[]{4,6,7,2,8,8});
-        mySort(new Integer[]{1,2,3,4,5,4,3,5,4,3,2,1,6,8,5,4,3,2,1,6,8,7,5,4,3,2,1,6,8,7,0,9,5,4,3,2,1,6,8,7,0,2,5,6,2,6,1,4,6,1,5,4,3,2,1,0,5,4,3,5,2,5,1,4,7,0,3,1,2,4,6,8,3,1,6,8,2,7,9,2,5,4,9,6,4,1,0,8,5,3,6,5,8,7,3,3,4,5,2,3,5,8,9,4,5});
 
     }
 
@@ -53,7 +50,7 @@ public class Main {
     private static void calculator(){
         Scanner scanner = new Scanner(System.in);
         Double a = scanner.nextDouble();
-        Character op = scanner.next().charAt(0);
+        char op = scanner.next().charAt(0);
         Double b = scanner.nextDouble();
         Double result = null;
         switch (op) {
@@ -79,8 +76,8 @@ public class Main {
 
     private static Double getSumm(Double[] array) {
         Double summ = 0.0;
-        for (int i = 0; i < array.length; i++) {
-            summ += array[i];
+        for (Double aDouble : array) {
+            summ += aDouble;
         }
         return summ;
     }
@@ -112,8 +109,8 @@ public class Main {
 
     private static Integer[] genSort(Integer[] array) {
         Integer[] sort = new Integer[]{0,0,0,0,0,0,0,0,0,0};
-        for (int i = 0; i < array.length; i++) {
-            sort[array[i]]++;
+        for (Integer integer : array) {
+            sort[integer]++;
         }
         return sort;
     }
