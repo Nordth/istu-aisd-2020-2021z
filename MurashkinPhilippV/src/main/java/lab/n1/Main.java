@@ -2,11 +2,44 @@ package lab.n1;
 
 public class Main {
     public static void main(String[] args) {
-
         Integer[] arr = new Integer[]{1,2,6,7,8,3,5,2,5,7,3,2,2,5,1,3,4,5,6};
         System.out.println("Input: " + arrayInt2String(arr));
-        arr = sortMerge(arr);
+        arr = sortInsert(arr);
         System.out.println("Output: " + arrayInt2String(arr));
+    }
+
+    private static Integer[] sortInsert(Integer[] array){
+        if (array.length < 2) return array;
+        for (int i = 1; i < array.length; i++) {
+            if (array[i] >= array[i-1]) continue;
+            for (int j = i - 1; j >= 0; j--) {
+                if (array[i] < array[j]) continue;
+                if (array[i] >= array[j]) {
+                    array = insert(array, i, j+1);
+                    break;
+                }
+            }
+        }
+        return array;
+    }
+
+    private static Integer[] insert(Integer[] array, int from, int to) {
+        Integer ins = array[from];
+        for (int i = from; i > to; i--) {
+            array[i] = array[i-1];
+        }
+        array[to] = ins;
+        return array;
+    }
+
+    private static String arrayInt2String(Integer[] array){
+        if (array.length == 0) return "";
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(array[0]);
+        for (int i = 1; i < array.length; i++) {
+            stringBuilder.append(",").append(array[i]);
+        }
+        return stringBuilder.toString();
     }
 
     private static Integer[] sortMerge(Integer[] array){
@@ -55,15 +88,4 @@ public class Main {
         }
         return arr;
     }
-
-    private static String arrayInt2String(Integer[] array){
-        if (array.length == 0) return "";
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(array[0]);
-        for (int i = 1; i < array.length; i++) {
-            stringBuilder.append(",").append(array[i]);
-        }
-        return stringBuilder.toString();
-    }
-
 }
